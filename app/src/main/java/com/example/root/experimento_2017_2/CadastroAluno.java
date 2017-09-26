@@ -15,6 +15,7 @@ public class CadastroAluno extends AppCompatActivity {
     private EditText etNome;
     private EditText etEmail;
     private EditText etTelefone;
+    private Aluno aluno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +27,23 @@ public class CadastroAluno extends AppCompatActivity {
         etTelefone = (EditText) findViewById(R.id.et_telefone);
         Button button = (Button) findViewById(R.id.bt_salvar);
 
+        //pegar o aluno que está chegando.
+        aluno = (Aluno) getIntent().getSerializableExtra("aluno");
+        if (aluno != null){
+            etNome.setText(aluno.getNome());
+            etEmail.setText(aluno.getEmail());
+            etTelefone.setText(aluno.getTelefone());
+        }else{
+            aluno = new Aluno();
+        }
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Aluno aluno = new Aluno();
                 aluno.setNome(etNome.getText().toString());
                 aluno.setEmail(etEmail.getText().toString());
                 aluno.setTelefone(etTelefone.getText().toString());
-                Intent intent = getIntent().putExtra("aluno",aluno);
+                //Intent intent = getIntent().putExtra("aluno",aluno);
                 AlunoDAO dao = new AlunoDAO(CadastroAluno.this);
                 dao.salvar(aluno);
                 //setResult(RESULT_OK,intent);
